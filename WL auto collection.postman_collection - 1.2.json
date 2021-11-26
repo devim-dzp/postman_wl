@@ -1,0 +1,2641 @@
+{
+	"info": {
+		"_postman_id": "227d9a57-1565-432a-b0d0-0fa858a5f5b9",
+		"name": "WL auto collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "mobile auth",
+					"item": [
+						{
+							"name": "login.sendConfirmationCode",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"jsonrpc\": \"2.0\",\r\n    \"method\": \"auth.login.sendConfirmationCode\",\r\n    \"params\": {\r\n        \"phone_number\": \"{{phoneNumber}}\"\r\n    },\r\n    \"id\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{rpc}}",
+									"host": [
+										"{{rpc}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login.confirm",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"jsonrpc\": \"2.0\",\r\n    \"method\": \"auth.login.confirm\",\r\n    \"params\": {\r\n        \"phone_number\": \"{{phoneNumber}}\",\r\n        \"confirmation_code\": \"1234\"\r\n        },\r\n    \"id\": 1\r\n}"
+								},
+								"url": {
+									"raw": "{{rpc}}",
+									"host": [
+										"{{rpc}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"access_token\", pm.response.json().result.access_token);\r",
+									"pm.environment.set(\"refresh_token\", pm.response.json().result.refresh_token);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-device-id",
+								"value": "x-device-id",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"jsonrpc\": \"2.0\",\r\n    \"method\": \"auth.login\",\r\n    \"params\": {\r\n        \"phone_number\": \"{{phoneNumber}}\",\r\n        \"password\": \"1234\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "registerUserByPhone",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"access_token\", pm.response.json().result.access_token);\r",
+									"pm.environment.set(\"refresh_token\", pm.response.json().result.refresh_token);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set('phoneNumber', _.random(79000000000, 79999999999), String);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-device-id",
+								"value": "x-device-id",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"jsonrpc\": \"2.0\",\r\n    \"method\": \"auth.registerUserByPhone\",\r\n    \"params\": {\r\n        \"phone_number\": \"{{phoneNumber}}\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getUserState",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"jsonrpc\": \"2.0\",\r\n    \"method\": \"auth.getUserState\",\r\n    \"params\": {\r\n        \"phone_number\": \"{{phoneNumber}}\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{rpc}}?Content-Type=application/json",
+							"host": [
+								"{{rpc}}"
+							],
+							"query": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sendConfirmationCode",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"jsonrpc\": \"2.0\",\r\n    \"method\": \"auth.sendConfirmationCode\",\r\n    \"params\": {\r\n        \"phone_number\": \"{{phoneNumber}}\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "setUserPassword",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"access_token\", pm.response.json().result.access_token);\r",
+									"pm.environment.set(\"refresh_token\", pm.response.json().result.refresh_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"jsonrpc\": \"2.0\",\r\n    \"method\": \"auth.setUserPassword\",\r\n    \"params\": {\r\n        \"phone_number\": \"{{phoneNumber}}\",\r\n        \"password\": \"1234\",\r\n        \"confirmation_code\": \"1234\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refreshToken",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"access_token\", pm.response.json().result.access_token);",
+									"pm.environment.set(\"refresh_token\", pm.response.json().result.refresh_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-device-id",
+								"value": "x-device-id",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"jsonrpc\": \"2.0\",\r\n    \"method\": \"auth.refreshToken\",\r\n    \"params\": {\r\n        \"refresh_token\": \"{{refresh_token}}\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth v2 (blocked lk)",
+			"item": [
+				{
+					"name": "mobile auth",
+					"item": [
+						{
+							"name": "login.sendConfirmationCode v2",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"jsonrpc\": \"2.0\",\r\n    \"method\": \"v2.auth.login.sendConfirmationCode\",\r\n    \"params\": {\r\n        \"phone_number\": \"{{phoneNumber}}\"\r\n    },\r\n    \"id\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{rpc}}",
+									"host": [
+										"{{rpc}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login.confirm v2",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"jsonrpc\": \"2.0\",\r\n    \"method\": \"v2.auth.login.confirm\",\r\n    \"params\": {\r\n        \"phone_number\": \"{{phoneNumber}}\",\r\n        \"confirmation_code\": \"1234\"\r\n        },\r\n    \"id\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{rpc}}",
+									"host": [
+										"{{rpc}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "login v2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"access_token\", pm.response.json().result.access_token);\r",
+									"pm.environment.set(\"refresh_token\", pm.response.json().result.refresh_token);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-device-id",
+								"value": "x-device-id",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"jsonrpc\": \"2.0\",\r\n    \"method\": \"v2.auth.login\",\r\n    \"params\": {\r\n        \"phone_number\": \"{{phoneNumber}}\",\r\n        \"password\": \"1234\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "registerUserByPhone",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"access_token\", pm.response.json().result.access_token);\r",
+									"pm.environment.set(\"refresh_token\", pm.response.json().result.refresh_token);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set('phoneNumber', _.random(79000000000, 79999999999), String);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-device-id",
+								"value": "x-device-id",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"jsonrpc\": \"2.0\",\r\n    \"method\": \"auth.registerUserByPhone\",\r\n    \"params\": {\r\n        \"phone_number\": \"{{phoneNumber}}\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getUserState",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"jsonrpc\": \"2.0\",\r\n    \"method\": \"auth.getUserState\",\r\n    \"params\": {\r\n        \"phone_number\": \"{{phoneNumber}}\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{rpc}}?Content-Type=application/json",
+							"host": [
+								"{{rpc}}"
+							],
+							"query": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sendConfirmationCode v2",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"jsonrpc\": \"2.0\",\r\n    \"method\": \"v2.auth.sendConfirmationCode\",\r\n    \"params\": {\r\n        \"phone_number\": \"{{phoneNumber}}\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "setUserPassword v2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"access_token\", pm.response.json().result.access_token);\r",
+									"pm.environment.set(\"refresh_token\", pm.response.json().result.refresh_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"jsonrpc\": \"2.0\",\r\n    \"method\": \"v2.auth.setUserPassword\",\r\n    \"params\": {\r\n        \"phone_number\": \"{{phoneNumber}}\",\r\n        \"password\": \"1234\",\r\n        \"confirmation_code\": \"1234\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refreshToken v2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"access_token\", pm.response.json().result.access_token);",
+									"pm.environment.set(\"refresh_token\", pm.response.json().result.refresh_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-device-id",
+								"value": "x-device-id",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"jsonrpc\": \"2.0\",\r\n    \"method\": \"auth.refreshToken\",\r\n    \"params\": {\r\n        \"refresh_token\": \"{{refresh_token}}\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "LoanApplication",
+			"item": [
+				{
+					"name": "createOrUpdate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"id\", pm.response.json().result.id);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"jsonrpc\": \"2.0\",\r\n    \"method\": \"loanApplication.createOrUpdate\",\r\n    \"params\": {\r\n        \"period\": 20,\r\n        \"amount\": 3000000\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getActive",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"id\", pm.response.json().result.id);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"jsonrpc\": \"2.0\",\r\n    \"method\": \"loanApplication.getActive\",\r\n    \"params\": {\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "applicationForm",
+			"item": [
+				{
+					"name": "getAgreements",
+					"protocolProfileBehavior": {
+						"followRedirects": false,
+						"followOriginalHttpMethod": false,
+						"followAuthorizationHeader": false
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"jsonrpc\": \"2.0\",\r\n    \"id\": \"1\",\r\n    \"method\": \"applicationForm.getAgreements\"\r\n}"
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createOrUpdate",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var first_name = [\r",
+									"    'Анна',\r",
+									"    'Артем',\r",
+									"    'Маша',\r",
+									"    'Саша',\r",
+									"    'Таня',\r",
+									"    'Игорь'\r",
+									"];\r",
+									"var randomNumber = Math.floor(Math.random()*first_name.length);\r",
+									"pm.environment.set(\"first_name\",first_name[randomNumber]);\r",
+									"var last_name = [\r",
+									"    'Бобров',\r",
+									"    'Сукнов',\r",
+									"    'Томсков',\r",
+									"    'Белов',\r",
+									"    'Шылова',\r",
+									"    'Мылова'\r",
+									"];\r",
+									"var randomNumber = Math.floor(Math.random()*last_name.length);\r",
+									"pm.environment.set(\"last_name\",last_name[randomNumber]);\r",
+									"var patronymic = [\r",
+									"    'Александровна',\r",
+									"    'Федоров',\r",
+									"    'Сергеев',\r",
+									"    'Васильев',\r",
+									"    'Раскосова',\r",
+									"    'Гультинка'\r",
+									"];\r",
+									"var randomNumber = Math.floor(Math.random()*patronymic.length);\r",
+									"pm.environment.set(\"patronymic\",patronymic[randomNumber]);\r",
+									"var city = [\r",
+									"    'Москва',\r",
+									"    'Омск',\r",
+									"    'Воронеж',\r",
+									"    'Ставрополь',\r",
+									"    'Пятигорск',\r",
+									"    'Астрахань'\r",
+									"];\r",
+									"var randomNumber = Math.floor(Math.random()*city.length);\r",
+									"pm.environment.set(\"city\",city[randomNumber]);\r",
+									"pm.globals.set('passportNumber', _.random(1000, 9999), String);\r",
+									"pm.globals.set('passportSeries', _.random(100000, 999999), String);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"client_email\", pm.response.json().result.fields['client_email']);\r",
+									"pm.environment.set(\"last_name\", pm.response.json().result.fields['passport_last_name']);\r",
+									"pm.environment.set(\"first_name\", pm.response.json().result.fields['passport_first_name']);\r",
+									"pm.environment.set(\"patronymic\", pm.response.json().result.fields['passport_patronymic']);\r",
+									"pm.environment.set(\"passport_series\", pm.response.json().result.fields['passport_series']);\r",
+									"pm.environment.set(\"passport_number\", pm.response.json().result.fields['passport_number']);\r",
+									"pm.environment.set(\"passport_department_code\", pm.response.json().result.fields['passport_department_code']);\r",
+									"pm.environment.set(\"passport_issue_date\", pm.response.json().result.fields['passport_issue_date']);\r",
+									"pm.environment.set(\"passport_issued_by\", pm.response.json().result.fields['passport_issued_by']);\r",
+									"pm.environment.set(\"date_of_birth\", pm.response.json().result.fields['passport_date_of_birth']);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"followRedirects": false,
+						"followOriginalHttpMethod": false,
+						"followAuthorizationHeader": false
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"jsonrpc\": \"2.0\",\r\n    \"id\": \"1\",\r\n    \"method\": \"applicationForm.createOrUpdate\",\r\n    \"params\": {\r\n        \"client_phone\": \"{{phoneNumber}}\",\r\n        \"client_email\": \"{{$randomEmail}}\",\r\n        \"client_inn\": \"703812924508\",\r\n        \"contact_first_name1\": \"Ирина\",\r\n        \"contact_last_name1\": \"Иванова\",\r\n        \"contact_patronymic1\": \"Петровна\",\r\n        \"contact_phone1\": \"79998887766\",\r\n        \"contact_relation1\": \"family_member\",\r\n        \"contact_first_name2\": \"Михаил\",\r\n        \"contact_last_name2\": \"Шепелев\",\r\n        \"contact_patronymic2\": \"Васильевич\",\r\n        \"contact_phone2\": \"78887776655\",\r\n        \"contact_relation2\": \"family_member\",\r\n        \"contact_first_name3\": \"Федор\",\r\n        \"contact_last_name3\": \"Иванов\",\r\n        \"contact_patronymic3\": \"Михайлович\",\r\n        \"contact_phone3\": \"76665554433\",\r\n        \"contact_relation3\": \"family_member\",\r\n        \"address_city\": \"Спб\",\r\n        \"address_street\": \"Мебельная\",\r\n        \"address_house\": \"1\",\r\n        \"address_apartment\": \"143\",\r\n        \"address_country\": \"Россия\",\r\n        \"passport_last_name\": \"{{last_name}}\",\r\n        \"passport_first_name\": \"{{first_name}}\",\r\n        \"passport_patronymic\": \"{{patronymic}}\",\r\n        \"passport_date_of_birth\": \"02.01.1990\",\r\n        \"passport_series\": {{passportNumber}},\r\n        \"passport_number\": {{passportSeries}},\r\n        \"passport_department_code\": \"762654\",\r\n        \"passport_issue_date\": \"03.09.2011\",\r\n        \"passport_place_of_birth\": \"{{city}}\",\r\n        \"passport_issued_by\": \"ТП N11 Какого-то района города Спб\",\r\n        \"passport_gender\": \"male\",\r\n        \"martial_status\": \"not_married\",\r\n        \"martial_family_count\": \"one\",\r\n        \"martial_children_count\": \"zero\",\r\n        \"martial_live_with_parents\": true,\r\n        \"work_status\": \"work\",\r\n        \"work_employer\": \"ООО Девим\",\r\n        \"work_address\": \"Мебельная 1\",\r\n        \"work_phone\": \"79998887766\",\r\n        \"work_position\": \"Девопс\",\r\n        \"work_salary\": \"less_than_10\",\r\n        \"work_salary_day\": 1\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getLast",
+					"protocolProfileBehavior": {
+						"followRedirects": false,
+						"followOriginalHttpMethod": false,
+						"followAuthorizationHeader": false
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"jsonrpc\": \"2.0\",\r\n    \"id\": \"1\",\r\n    \"method\": \"applicationForm.getLast\"\r\n}"
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getDocument",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"1\",\n  \"method\": \"applicationForm.getDocument\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sendConfirmationCode",
+					"protocolProfileBehavior": {
+						"followRedirects": false,
+						"followOriginalHttpMethod": false,
+						"followAuthorizationHeader": false
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"jsonrpc\": \"2.0\",\r\n    \"id\": \"1\",\r\n    \"method\": \"applicationForm.sendConfirmationCode\"\r\n}"
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sign",
+					"protocolProfileBehavior": {
+						"followRedirects": false,
+						"followOriginalHttpMethod": false,
+						"followAuthorizationHeader": false
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"jsonrpc\": \"2.0\",\r\n    \"id\": \"1\",\r\n    \"method\": \"applicationForm.sign\",\r\n    \"params\": {\r\n        \"confirmation_code\": \"1234\",\r\n        \"agreements\": {\r\n            \"service_first180\": true,\r\n            \"service_repeat180\": true,\r\n            \"personal_info\": true,\r\n            \"give_up_claim_rights\": true,\r\n            \"analog_of_the_autographic_signature_agreement\": true\r\n        }\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "loan",
+			"item": [
+				{
+					"name": "servicepaymentoptions (ря)",
+					"item": [
+						{
+							"name": "getAvailableOptions",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"id-sp\", pm.response.json().result[0].id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 1,\r\n    \"jsonrpc\": \"2.0\",\r\n    \"method\": \"loan.option.getAvailable\",\r\n    \"params\": {}\r\n}"
+								},
+								"url": {
+									"raw": "{{rpc}}",
+									"host": [
+										"{{rpc}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "option.choose",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 1,\r\n    \"jsonrpc\": \"2.0\",\r\n    \"method\": \"loan.option.choose\",\r\n    \"params\": {\r\n        \"option_id\": \"{{id-sp}}\"\r\n    }\r\n}\r\n"
+								},
+								"url": {
+									"raw": "{{rpc}}",
+									"host": [
+										"{{rpc}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "option.sendConfirmationCode",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 1,\r\n    \"jsonrpc\": \"2.0\",\r\n    \"method\": \"loan.option.sendConfirmationCode\",\r\n    \"params\": {\r\n        \"option_id\": \"{{id-sp}}\"\r\n    }\r\n}"
+								},
+								"url": {
+									"raw": "{{rpc}}",
+									"host": [
+										"{{rpc}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "option.confirmSignCode",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 1,\r\n    \"jsonrpc\": \"2.0\",\r\n    \"method\": \"loan.option.confirmSignCode\",\r\n    \"params\": {\r\n        \"option_id\": \"{{id-sp}}\",\r\n        \"sign_code\": \"1234\"\r\n    }\r\n}"
+								},
+								"url": {
+									"raw": "{{rpc}}",
+									"host": [
+										"{{rpc}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "getActive",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"id-loan\", pm.response.json().result.id);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"jsonrpc\": \"2.0\",\n    \"method\": \"loan.getActive\",\n    \"params\": {\n    }\n}"
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "chooseReserveProduct",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"jsonrpc\": \"2.0\",\n    \"method\": \"loan.chooseReserveProduct\",\n    \"params\": {\n    }\n}"
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "chooseOriginalProduct",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"jsonrpc\": \"2.0\",\n    \"method\": \"loan.chooseOriginalProduct\",\n    \"params\": {\n    }\n}"
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getSignDocuments",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"jsonrpc\": \"2.0\",\n    \"method\": \"loan.getSignDocuments\",\n    \"params\": {\n    }\n}"
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sendSignCode",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"jsonrpc\": \"2.0\",\n    \"method\": \"loan.sendSignCode\",\n    \"params\": {\n    }\n}"
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "confirmSignCode",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"jsonrpc\": \"2.0\",\n    \"method\": \"loan.confirmSignCode\",\n    \"params\": {\n        \"sign_code\": \"1234\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "admin",
+			"item": [
+				{
+					"name": "loanApplication",
+					"item": [
+						{
+							"name": "approve",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1\",\n    \"method\": \"admin.loanApplication.approve\",\n    \"params\": {\n        \"id\": {{id}},\n        \"amount\": 1000000,\n        \"period\": 30\n    }\n}"
+								},
+								"url": {
+									"raw": "{{adminRpc}}",
+									"host": [
+										"{{adminRpc}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "reject",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1\",\n    \"method\": \"admin.loanApplication.reject\",\n    \"params\": {\n        \"id\": {{id}}\n    }\n}"
+								},
+								"url": {
+									"raw": "{{adminRpc}}",
+									"host": [
+										"{{adminRpc}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getList",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1\",\n    \"method\": \"admin.loanApplication.getList\",\n    \"params\": {\n        \"where\": {\n            \"loan_application_ids\": [1,2]\n        }\n    }\n}"
+								},
+								"url": {
+									"raw": "{{adminRpc}}",
+									"host": [
+										"{{adminRpc}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "loan",
+					"item": [
+						{
+							"name": "loan.getList",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1\",\n    \"method\": \"admin.loan.getList\",\n    \"params\": {\n        \"where\": {\n            \"statuses\": [\"ready_to_issue\"]\n        }\n    }\n}"
+								},
+								"url": {
+									"raw": "{{adminRpc}}",
+									"host": [
+										"{{adminRpc}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "loan.getListInvoice",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 1,\r\n    \"jsonrpc\": \"2.0\",\r\n    \"method\": \"admin.loan.getListInvoice\",\r\n    \"params\": {\r\n        \"loan_id\": {{id-loan}}\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{adminRpc}}",
+									"host": [
+										"{{adminRpc}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "loan.getListDocument",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 1,\r\n    \"jsonrpc\": \"2.0\",\r\n    \"method\": \"admin.loan.getListDocument\",\r\n    \"params\": {\r\n        \"loan_id\": {{id-loan}}\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{adminRpc}}",
+									"host": [
+										"{{adminRpc}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "client",
+					"item": [
+						{
+							"name": "getList",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"id-client\", pm.response.json().result[0].id);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1\",\n    \"method\": \"admin.client.getList\",\n    \"params\": {\n        \"where\": {\n            \"phone\": \"{{phoneNumber}}\"\n        }\n    }\n}"
+								},
+								"url": {
+									"raw": "{{adminRpc}}",
+									"host": [
+										"{{adminRpc}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "client.setIdentification",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1\",\n    \"method\": \"admin.client.setIdentification\",\n    \"params\": {\n        \"client_id\": {{id-client}},\n        \"identification\": true\n    }\n}"
+								},
+								"url": {
+									"raw": "{{adminRpc}}",
+									"host": [
+										"{{adminRpc}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "client.getListAttachment",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"jsonrpc\": \"2.0\",\r\n    \"id\": \"1\",\r\n    \"method\": \"admin.client.getListAttachment\",\r\n    \"params\": {\r\n        \"client_id\": {{id-client}}\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{adminRpc}}",
+									"host": [
+										"{{adminRpc}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "client.getLoansCount",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"jsonrpc\": \"2.0\",\r\n    \"id\": \"1\",\r\n    \"method\": \"admin.client.getLoansCount\",\r\n    \"params\": {\r\n        \"passport\": {\r\n            \"series\": \"3897\",\r\n            \"number\": \"257702\"\r\n        }\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{adminRpc}}",
+									"host": [
+										"{{adminRpc}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "client.uploadAttachment",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"id\":1,\n\"jsonrpc\":\"2.0\",\n\"method\":\"client.uploadAttachment\",\n\"params\":\n{\"type\":\"passport_main_page\",\n\"file\":\"data:application/json;base64,ewogICJleHRlbmRzIjogIkBkZXZpbS1mcm9udC90c2NvbmZpZyIsCiAgImNvbXBpbGVyT3B0aW9ucyI6IHsKICAgICJiYXNlVXJsIjogInNyYyIsCiAgICAidHlwZVJvb3RzIjogWwogICAgICAibm9kZV9tb2R1bGVzL0B0eXBlcyIsCiAgICAgICJzcmMvQHR5cGVzIgogICAgXQogIH0sCiAgImluY2x1ZGUiOiBbCiAgICAic3JjLyoqLyoiCiAgXQp9\"}}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{rpc}}",
+									"host": [
+										"{{rpc}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "admin client work",
+					"item": [
+						{
+							"name": "admin.aa.updateclient",
+							"protocolProfileBehavior": {
+								"followRedirects": false,
+								"followOriginalHttpMethod": false,
+								"followAuthorizationHeader": false
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "",
+										"disabled": true
+									},
+									{
+										"key": "X-Admin-Name",
+										"value": "test admin"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"id\":1,\"jsonrpc\":\"2.0\",\"method\":\"admin.client.update\",\"params\":{\"id\":\"{{id-client}}\",\"phone\":\"79875645621\",\"email\":\"test@test.ru\",\"snils\":\"\",\"martial_status\":\"not_married\",\"family_count\":\"\",\"children_count\":\"\",\"live_with_parents\":\"true\",\"registration_address_country\":\"\",\"registration_address_city\":\"\",\"registration_address_street\":\"\",\"registration_address_house\":\"\",\"registration_address_apartment\":\"\",\"residence_address_country\":\"\",\"residence_address_city\":\"\",\"residence_address_street\":\"\",\"residence_address_house\":\"\",\"residence_address_apartment\":\"\",\"contact1_first_name\":\"\",\"contact1_last_name\":\"\",\"contact1_patronymic\":\"\",\"contact1_phone\":\"\",\"contact1_relation\":\"\",\"contact2_first_name\":\"\",\"contact2_last_name\":\"\",\"contact2_patronymic\":\"\",\"contact2_phone\":\"\",\"contact2_relation\":\"\",\"contact3_first_name\":\"\",\"contact3_last_name\":\"\",\"contact3_patronymic\":\"\",\"contact3_phone\":\"\",\"contact3_relation\":\"\",\"work_status\":\"\",\"work_employer\":\"\",\"work_address\":\"\",\"work_phone\":\"\",\"work_position\":\"\",\"work_salary\":\"\",\"work_salary_day\":\"1\",\"passport_series\":\"2005\",\"passport_number\":\"171010\",\"passport_department_code\":\"123-123\",\"passport_place_of_birth\":\"123\",\"passport_date_of_birth\":\"2021-10-10\",\"passport_issued_by\":\"123\",\"passport_issue_date\":\"2010-10-10\",\"passport_first_name\":\"\\u0418\\u0432\\u0430\\u043d\\u043e\\u0432\",\"passport_last_name\":\"\\u0418\\u0432\\u0430\\u043d\\u043e\\u0432\",\"passport_patronymic\":\"\\u0418\\u0432\\u0430\\u043d\\u043e\\u0432\\u0438\\u0447\",\"passport_gender\":\"male\"}}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{adminRpc}}",
+									"host": [
+										"{{adminRpc}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "admin.client.clearLimits (смски)",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 1,\r\n  \"jsonrpc\": \"2.0\",\r\n  \"method\": \"admin.client.clearLimits\",\r\n  \"params\": {\r\n    \"client_id\": {{id-client}},\r\n    \"limiter_type\": \"application_form_confirm\"\r\n  }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{adminRpc}}",
+									"host": [
+										"{{adminRpc}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Blocker",
+					"item": [
+						{
+							"name": "hand block",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": \"1\",\r\n  \"jsonrpc\": \"2.0\",\r\n  \"method\": \"admin.client.block.create\",\r\n  \"params\": {\r\n    \"block_expired_at\": \"2021-08-04T01:04:00+03:00\",\r\n    \"block_reason\": \"prichina\",\r\n    \"block_type\": \"manual_lk_block\",\r\n    \"client_id\": 120094\r\n  }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{adminRpc}}",
+									"host": [
+										"{{adminRpc}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "admin payment methods",
+					"item": [
+						{
+							"name": "admin.loan.invoice-manual",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": \"1\",\r\n  \"jsonrpc\": \"2.0\",\r\n  \"method\": \"admin.loan.invoice-manual\",\r\n  \"params\": {\r\n    \"amount\": 467600,\r\n    \"company\": \"mps-tekhnolodzhi\", \r\n    \"dated_at\": \"2021-11-04T11:04:00+03:00\",\r\n    \"loan_id\": 134132\r\n  }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{adminRpc}}",
+									"host": [
+										"{{adminRpc}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{admin_access_token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "payment",
+			"item": [
+				{
+					"name": "getCards",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"id-card\", pm.response.json().result[0].id);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1\",\n    \"method\": \"payment.getCards\"\n}"
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "bidCard",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1\",\n    \"method\": \"payment.bindCard\"\n}"
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "payout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1\",\n    \"method\": \"payment.payout\",\n    \"params\": {\n        \"card_id\": {{id-card}}\n    }\n}"
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getInfo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1\",\n    \"method\": \"payment.getInfo\",\n    \"params\": {\n        \"amount\": 666666,\n        \"payment_method_alias\": \"card\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPaymetInfo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1\",\n    \"method\": \"payment.getPaymentMethods\",\n    \"params\": {\n        \"amount\": 1000000\n    }\n}"
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "system",
+			"item": [
+				{
+					"name": "loan.shift",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1\",\n    \"method\": \"admin.loan.shift\",\n    \"params\": {\n        \"id\": {{id-loan}},\n        \"shift\":  16\n    }\n}"
+						},
+						"url": {
+							"raw": "{{adminRpc}}",
+							"host": [
+								"{{adminRpc}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "client",
+			"item": [
+				{
+					"name": "getProfile v2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"client_email\", pm.response.json().result.fields['client_email']);\r",
+									"pm.environment.set(\"last_name\", pm.response.json().result.fields['passport_last_name']);\r",
+									"pm.environment.set(\"first_name\", pm.response.json().result.fields['passport_first_name']);\r",
+									"pm.environment.set(\"patronymic\", pm.response.json().result.fields['passport_patronymic']);\r",
+									"pm.environment.set(\"passport_series\", pm.response.json().result.fields['passport_series']);\r",
+									"pm.environment.set(\"passport_number\", pm.response.json().result.fields['passport_number']);\r",
+									"pm.environment.set(\"passport_department_code\", pm.response.json().result.fields['passport_department_code']);\r",
+									"pm.environment.set(\"passport_issue_date\", pm.response.json().result.fields['passport_issue_date']);\r",
+									"pm.environment.set(\"passport_issued_by\", pm.response.json().result.fields['passport_issued_by']);\r",
+									"pm.environment.set(\"date_of_birth\", pm.response.json().result.fields['passport_date_of_birth']);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"jsonrpc\": \"2.0\",\r\n    \"method\": \"v2.client.getProfile\",\r\n    \"params\": {\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PaymentGate",
+			"item": [
+				{
+					"name": "payment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Pan\": \"546962******6701\",\r\n    \"Data\": {\r\n        \"MD\": \"ACQP-7245422982\",\r\n        \"Email\": \"maks1790@mail.ru\",\r\n        \"accept\": \"application/json, text/plain, */*\",\r\n        \"number\": \"7264600\",\r\n        \"PAY_FORM\": \"mfo\",\r\n        \"REDIRECT\": \"false\",\r\n        \"INFO_EMAIL\": \"maks1790@mail.ru\",\r\n        \"SEND_EMAIL\": \"Y\",\r\n        \"colorDepth\": \"32\",\r\n        \"javaEnabled\": \"false\",\r\n        \"CUSTOMER_KEY\": \"6717946\",\r\n        \"mfoAgreement\": \"5-473889\"\r\n    },\r\n    \"Token\": \"114bb4908400dc6fd7a36e998e4db995a58dccb315e26b9dd5adee1ce6ac2f7d\",\r\n    \"Amount\": 448353,\r\n    \"CardId\": 52613746,\r\n    \"Status\": \"CONFIRMED\",\r\n    \"ExpDate\": \"0222\",\r\n    \"OrderId\": \"21465639\",\r\n    \"Success\": \"true\",\r\n    \"RebillId\": 767941895,\r\n    \"ErrorCode\": \"0\",\r\n    \"PaymentId\": 471292538,\r\n    \"TerminalKey\": \"1486990712857ATOP\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "card",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Pan\": \"546962******6701\",\r\n    \"Data\": {\r\n        \"MD\": \"ACQP-7245422982\",\r\n        \"Email\": \"maks1790@mail.ru\",\r\n        \"accept\": \"application/json, text/plain, */*\",\r\n        \"number\": \"7264600\",\r\n        \"PAY_FORM\": \"mfo\",\r\n        \"REDIRECT\": \"false\",\r\n        \"INFO_EMAIL\": \"maks1790@mail.ru\",\r\n        \"SEND_EMAIL\": \"Y\",\r\n        \"colorDepth\": \"32\",\r\n        \"javaEnabled\": \"false\",\r\n        \"CUSTOMER_KEY\": \"6717946\",\r\n        \"mfoAgreement\": \"5-473889\"\r\n    },\r\n    \"Token\": \"114bb4908400dc6fd7a36e998e4db995a58dccb315e26b9dd5adee1ce6ac2f7d\",\r\n    \"Amount\": 448353,\r\n    \"CardId\": 52613746,\r\n    \"Status\": \"CONFIRMED\",\r\n    \"ExpDate\": \"0222\",\r\n    \"OrderId\": \"21465639\",\r\n    \"Success\": \"true\",\r\n    \"RebillId\": 767941895,\r\n    \"ErrorCode\": \"0\",\r\n    \"PaymentId\": 471292538,\r\n    \"TerminalKey\": \"1486990712857ATOP\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "noauth"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Refund",
+			"item": [
+				{
+					"name": "client.options.getAvailable",
+					"protocolProfileBehavior": {
+						"followRedirects": false,
+						"followOriginalHttpMethod": false,
+						"followAuthorizationHeader": false
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MjkzODcxODMsImV4cCI6MTYyOTM5MDc4MywiY2xpZW50SWQiOjF9.geA2uBjIIgnTxUvZK6WLzeDVmk26BJVQT0tRNnQFVcE",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"id\":1,\r\n\"jsonrpc\":\"2.0\",\r\n\"method\":\"client.options.getAvailable\",\r\n\"params\":{}\r\n}"
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "applicationForm.createOrUpdate",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"jsonrpc\":\"2.0\",\r\n\"id\":\"1\",\r\n\"method\":\"applicationForm.createOrUpdate\",\r\n\"params\":\r\n    {\"email\":\"{{client_email}}\",\r\n\"loan_id\":\"{{id-loan}}\",\r\n\"passport_first_name\":\"{{first_name}}\",\r\n\"passport_last_name\":\"{{last_name}}\",\r\n\"passport_patronymic\":\"{{patronymic}}\",\r\n\"passport_date_of_birth\":\"{{date_of_birth}}\",\r\n\"passport_series\":\"{{passport_series}}\",\r\n\"passport_number\":\"{{passport_number}}\",\r\n\"passport_department_code\":\"{{passport_department_code}}\",\r\n\"passport_issue_date\":\"{{passport_issue_date}}\",\r\n\"passport_issued_by\":\"{{passport_issued_by}}\",\r\n\"city\":\"test\",\r\n\"street\":\"test\",\r\n\"house\":\"test\",\r\n\"apartment\":\"test\",\r\n\"bank_name\":\"test\",\r\n\"bank_bik\":\"044030653\",\r\n\"bank_account_number\":\"40817810555863087495\",\r\n\"bank_client_full_name\":\"{{last_name}} {{first_name}} {{patronymic}}\",\r\n\"application_type\":\"refund_service_payment\"}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "client.options.getList",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"id\":1,\r\n\"jsonrpc\":\"2.0\",\r\n\"method\":\"client.options.getList\",\r\n\"params\":{}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin.client.option.unlockRefundService",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"jsonrpc\":\"2.0\",\n\"id\":\"1\",\n\"method\":\"admin.client.option.unlockRefundService\",\n\"params\":{\n    \"client_id\":{{id-client}}}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{adminRpc}}",
+							"host": [
+								"{{adminRpc}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin.client.option.getList",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"jsonrpc\":\"2.0\",\n\"id\":\"1\",\n\"method\":\"admin.client.option.getList\",\n\"params\":{\n    \"client_id\":{{id-client}}\n    }\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{adminRpc}}",
+							"host": [
+								"{{adminRpc}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin.client.option.isAvailableRefundService",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"jsonrpc\":\"2.0\",\n\"id\":\"1\",\n\"method\":\"admin.client.option.isAvailableRefundService\",\n\"params\":{\n    \"client_id\":\n    {{\"id-client\"}}\n    }}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{adminRpc}}",
+							"host": [
+								"{{adminRpc}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload attachment",
+					"protocolProfileBehavior": {
+						"followRedirects": false,
+						"followOriginalHttpMethod": false,
+						"followAuthorizationHeader": false
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2Mjk4MTU5NzQsImV4cCI6MTYyOTgxOTU3NCwiY2xpZW50SWQiOjF9.BOZAXoYn_1CqEeX4SktcjuME_meyumpXZf_VWliT6oM"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"id\":1,\n\"jsonrpc\":\"2.0\",\n\"method\":\"client.uploadAttachment\",\n\"params\":\n{\"type\":\"refund_service_application\",\n\"file\":\"data:application/json;base64,ewogICJleHRlbmRzIjogIkBkZXZpbS1mcm9udC90c2NvbmZpZyIsCiAgImNvbXBpbGVyT3B0aW9ucyI6IHsKICAgICJiYXNlVXJsIjogInNyYyIsCiAgICAidHlwZVJvb3RzIjogWwogICAgICAibm9kZV9tb2R1bGVzL0B0eXBlcyIsCiAgICAgICJzcmMvQHR5cGVzIgogICAgXQogIH0sCiAgImluY2x1ZGUiOiBbCiAgICAic3JjLyoqLyoiCiAgXQp9\"}}"
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "sas",
+			"item": [
+				{
+					"name": "loan.getRfmReport",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"id\": 1,\r\n\"jsonrpc\": \"2.0\",\r\n\"method\": \"admin.loan.getRfmReport\",\r\n\"params\": {\r\n\"loan_id\": {{id-loan}}\r\n}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{adminRpc}}",
+							"host": [
+								"{{adminRpc}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "bankrots",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "uuid",
+									"value": "dce9b3db-0e33-4f4c-b458-91c2dc70adb3",
+									"type": "text"
+								},
+								{
+									"key": "method",
+									"value": "Bankkrupt",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://core.dev.wl.devim.team/legal-service/init",
+							"protocol": "https",
+							"host": [
+								"core",
+								"dev",
+								"wl",
+								"devim",
+								"team"
+							],
+							"path": [
+								"legal-service",
+								"init"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "payment without auth",
+			"item": [
+				{
+					"name": "auth.login.payment.createToken",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"token_payment\", pm.response.json().result.token);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-device-id",
+								"value": "x-device-id",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"jsonrpc\": \"2.0\",\n    \"method\": \"auth.login.payment.createToken\",\n    \"params\": {\n        \"loan_number\": \"707-105133\",\n        \"birthday\": \"{{date_of_birth}}\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://core.dev.wl.devim.team/rpc",
+							"protocol": "https",
+							"host": [
+								"core",
+								"dev",
+								"wl",
+								"devim",
+								"team"
+							],
+							"path": [
+								"rpc"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "payment.getInfoByToken",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"jsonrpc\": \"2.0\",\n    \"method\": \"payment.getInfoByToken\",\n    \"params\": {\n        \"amount\": 232109,\n        \"payment_method_alias\": \"card\",\n        \"utm\": \"utm_source=dzplk&utm_campaign=test\",\n        \"token\": \"{{token_payment}}\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "auth.login.payment.sendConfirmationCode",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"method\": \"auth.login.payment.sendConfirmationCode\",\n    \"params\": {\n        \"phone_number\": \"{{phoneNumber}}\"\n    },\n    \"id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "auth.login.payment.confirm",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"token_payment\", pm.response.json().result.token);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"method\": \"auth.login.payment.confirm\",\n    \"params\": {\n        \"phone_number\": \"{{phoneNumber}}\",\n        \"confirmation_code\": \"1234\"\n    },\n    \"id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{rpc}}",
+							"host": [
+								"{{rpc}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "bki requests",
+			"item": [
+				{
+					"name": "Получение списка ивентов за указанный период",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://core.dev.wl.devim.team/api/event?date_from=01.01.2021&date_to=01.01.2022&token=1ea88f4bccf7c1c2e78a28ec069a9aed335211d3",
+							"protocol": "https",
+							"host": [
+								"core",
+								"dev",
+								"wl",
+								"devim",
+								"team"
+							],
+							"path": [
+								"api",
+								"event"
+							],
+							"query": [
+								{
+									"key": "date_from",
+									"value": "01.01.2021"
+								},
+								{
+									"key": "date_to",
+									"value": "01.01.2022"
+								},
+								{
+									"key": "token",
+									"value": "1ea88f4bccf7c1c2e78a28ec069a9aed335211d3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение информации по ID займа",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "method",
+									"value": "\"method\"",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://core.dev.wl.devim.team/api/loan/108352?token=1ea88f4bccf7c1c2e78a28ec069a9aed335211d3",
+							"protocol": "https",
+							"host": [
+								"core",
+								"dev",
+								"wl",
+								"devim",
+								"team"
+							],
+							"path": [
+								"api",
+								"loan",
+								"108352"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "1ea88f4bccf7c1c2e78a28ec069a9aed335211d3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение информации по номеру займа",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://core.dev.wl.devim.team/api/loan_number/707-144377?token=1ea88f4bccf7c1c2e78a28ec069a9aed335211d3",
+							"protocol": "https",
+							"host": [
+								"core",
+								"dev",
+								"wl",
+								"devim",
+								"team"
+							],
+							"path": [
+								"api",
+								"loan_number",
+								"707-144377"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "1ea88f4bccf7c1c2e78a28ec069a9aed335211d3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Получение информации по клиенту",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://core.dev.wl.devim.team/api/client/{{id-client}}?token=1ea88f4bccf7c1c2e78a28ec069a9aed335211d3",
+							"protocol": "https",
+							"host": [
+								"core",
+								"dev",
+								"wl",
+								"devim",
+								"team"
+							],
+							"path": [
+								"api",
+								"client",
+								"{{id-client}}"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "1ea88f4bccf7c1c2e78a28ec069a9aed335211d3"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{access_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "rpc",
+			"value": "{{host}}/rpc"
+		},
+		{
+			"key": "access_token",
+			"value": ""
+		},
+		{
+			"key": "refresh_token",
+			"value": ""
+		},
+		{
+			"key": "x-device-id",
+			"value": ""
+		},
+		{
+			"key": "host",
+			"value": "http://wl-core.127.0.0.1.xip.io"
+		}
+	]
+}
