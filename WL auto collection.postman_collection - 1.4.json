@@ -1046,7 +1046,6 @@
 							"script": {
 								"exec": [
 									"pm.environment.set(\"id-loan\", pm.response.json().result.id);\r",
-									"pm.environment.set(\"early_amount\", pm.response.json().result.payment_summary.next_payment.sum_amount);\r",
 									""
 								],
 								"type": "text/javascript"
@@ -1754,7 +1753,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1\",\n    \"method\": \"payment.getInfo\",\n    \"params\": {\n        \"amount\": {{early_amount}},\n        \"payment_provider_alias\": \"tinkoff\",\n        \"payment_method_alias\": \"card\",\n        \"service_type\": \"loan\"\n    }\n}"
+							"raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1\",\n    \"method\": \"payment.getInfo\",\n    \"params\": {\n        \"amount\": 666666,\n        \"payment_method_alias\": \"card\"\n    }\n}"
 						},
 						"url": {
 							"raw": "{{rpc}}",
@@ -1783,7 +1782,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1\",\n    \"method\": \"payment.getPaymentMethods\",\n    \"params\": {\n        \"amount\": {{early_amount}},\n        \"service_type\": \"loan\"\n    }\n}"
+							"raw": "{\n    \"jsonrpc\": \"2.0\",\n    \"id\": \"1\",\n    \"method\": \"payment.getPaymentMethods\",\n    \"params\": {\n        \"amount\": 1000000\n    }\n}"
 						},
 						"url": {
 							"raw": "{{rpc}}",
@@ -2530,7 +2529,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://core.dev.wl.devim.team/api/loan_number/707-144378?token=1ea88f4bccf7c1c2e78a28ec069a9aed335211d3",
+							"raw": "https://core.dev.wl.devim.team/api/loan_number/707-144377?token=1ea88f4bccf7c1c2e78a28ec069a9aed335211d3",
 							"protocol": "https",
 							"host": [
 								"core",
@@ -2542,7 +2541,7 @@
 							"path": [
 								"api",
 								"loan_number",
-								"707-144378"
+								"707-144377"
 							],
 							"query": [
 								{
